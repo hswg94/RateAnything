@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync.js');
 const { validateCampground, getCampground, isLoggedIn, isAuthorized } = require('../middleware');
 const Campground = require('../models/campground.js');
 
-//Home page that shows all campgrounds
+//A home page that shows all campgrounds
 router.get('/', async(req, res) => {
     const campgrounds = await Campground.find({});
     res.render('campgrounds/index', { campgrounds });
@@ -24,14 +24,9 @@ router.post('/new', isLoggedIn, validateCampground, async(req, res) => {
     res.redirect(`/campgrounds/${ campground._id }`);
 });
 
-//Show a particular campground
-router.get('/:id', async(req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews').populate('author');
-    if (!campground) {
-        req.flash('error', 'Cannot find that campground!');
-        return res.redirect('/campgrounds');
-    }
-    res.render('campgrounds/show', { campground });
+//The page to display a particular campground
+router.get('/:id', getCampground, async(req, res) => {
+    res.render('campgrounds/show', { campground: req.campground });
 });
 
 //The page to edit a particular campground
