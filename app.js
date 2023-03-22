@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const app = express();
 const methodOverride = require("method-override");
 const ejsMate = require('ejs-mate');
-const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
@@ -61,14 +60,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/fakeUser', async(req, res) => {
-    const user = new User({
-        email: 'test@gmail.com',
-        username: 'test'
-    });
-    const newUser = await User.register(user, 'chicken');
-    res.send(newUser);
-});
+// app.get('/fakeUser', async(req, res) => {
+//     const user = new User({
+//         email: 'test@gmail.com',
+//         username: 'test'
+//     });
+//     const newUser = await User.register(user, 'chicken');
+//     res.send(newUser);
+// });
 
 app.use('/', userRoutes);
 app.use("/campgrounds", campgroundRoutes);

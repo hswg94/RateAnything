@@ -17,6 +17,18 @@ const validateReview = (req, res, next) => {
     }
 };
 
+
+const isAuthorized = async(req, res, next) => {
+    const { id, reviewId } = req.params;
+    const review = await Review.findById(reviewId);
+    if (!review.author.equals(req.user._id)) {
+        req.flash('error', 'You do not have permission to do that!');
+        return res.redirect(`/campgrounds/${id}`);
+    }
+    next();
+}
+
+//Create a new review
 router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res, next) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
@@ -28,12 +40,11 @@ router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res, next) =
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
-router.delete('/:reviewId', isLoggedIn, catchAsync(async(req, res) => {
-    const { id, reviewId } = req.params;
-    await Campground.findByIdAndUpdate(id, {$pull: {reviews : reviewId}});
-    await Review.findByIdAndDelete(reviewId);
+//Deletes a review
+router.delete('/:reviewId', isLoggedIn, isAuthorized, catchAsync(async(req, res) => {
+    await Review.findByIdAndDelete(req.params.reviewId);
     req.flash('success', 'Review Deleted!');
-    res.redirect(`/campgrounds/${id}`)
+    res.redirect(`/campgrounds/${req.params.id}`)
 }));
 
 module.exports = router;

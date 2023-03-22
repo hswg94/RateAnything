@@ -3,7 +3,6 @@ const ExpressError = require('./utils/ExpressError');
 const { campgroundSchema } = require('./schemas');
 
 module.exports.validateCampground = async(req, res, next) => {
-    console.log(req.body);
     const { error } = campgroundSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
@@ -11,18 +10,27 @@ module.exports.validateCampground = async(req, res, next) => {
     } else {
         next();
     }
-}
+};
 
 module.exports.getCampground = async (req, res, next) => {
     const { id } = req.params;
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(id)
+    .populate('author')
+    .populate({
+        path: 'reviews',
+        populate: {
+            path: 'author',
+            model: 'User'
+        }
+    });
+
     if (!campground) {
       req.flash('error', 'Campground not found!');
       return res.redirect('/campgrounds');
     }
     req.campground = campground;
     next();
-  };
+};
 
 module.exports.isLoggedIn = (req, res, next) => {
     if(!req.isAuthenticated()){
@@ -30,7 +38,7 @@ module.exports.isLoggedIn = (req, res, next) => {
         return res.redirect('/login');
     }
     next();
-}
+};
 
 module.exports.isAuthorized = async(req, res, next) => {
     const { id } = req.params;
@@ -40,4 +48,4 @@ module.exports.isAuthorized = async(req, res, next) => {
         return res.redirect(`/campgrounds/${id}`);
     }
     next();
-}
+};

@@ -16,30 +16,31 @@ router.get('/new', isLoggedIn, (req, res) => {
 });
 
 //Create new campground
-router.post('/new', isLoggedIn, validateCampground, async(req, res) => {
+
+router.post('/new', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
     campground.author = req.user._id;
     await campground.save();
-    req.flash('success', 'Successfully made a new campground!');
-    res.redirect(`/campgrounds/${ campground._id }`);
-});
+    req.flash('success', 'Successfully created a new campground!');
+    res.redirect(`/campgrounds/${campground._id}`);
+}));
 
-//The page to display a particular campground
 router.get('/:id', getCampground, async(req, res) => {
+    console.log(req.campground);
     res.render('campgrounds/show', { campground: req.campground });
 });
 
 //The page to edit a particular campground
-router.get('/:id/edit', getCampground, isLoggedIn, isAuthorized,  async (req, res) => {
+router.get('/:id/edit', getCampground, isLoggedIn, isAuthorized,  async(req, res) => {
     res.render('campgrounds/edit', { campground: req.campground });
 });
 
+
 //Edit a campground
 router.put('/:id/', getCampground, isLoggedIn, isAuthorized, validateCampground, async(req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    await req.campground.update({...req.body.campground});
     req.flash('success', 'Campground Updated');
-    res.redirect(`/campgrounds/${campground._id}`);
+    res.redirect(`/campgrounds/${req.campground._id}`);
 });
 
 //Delete a campground
