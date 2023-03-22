@@ -4,28 +4,36 @@ const catchAsync = require('../utils/catchAsync.js');
 const { validateCampground, getCampground, isLoggedIn, isAuthorized } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
 
-router.get('/', (campgrounds.index));
+router.get('/', (campgrounds.index))
 
-//The page to create a new campground
-router.get('/new', isLoggedIn, campgrounds.renderNewForm);
+router.route('/new')
+    //The page to create a new Campground
+    .get(isLoggedIn, campgrounds.renderNewForm)
 
-//Create new campground
+    //Create new Campground
+    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCG));
 
-router.post('/new', isLoggedIn, validateCampground, catchAsync(campgrounds.createCG));
+router.route('/:id')
+    //Display a campground
+    .get(getCampground, catchAsync(campgrounds.showCG))
+    
+    //Delete a campground
+    .delete(getCampground, isLoggedIn, isAuthorized, catchAsync(campgrounds.destroyCG));
 
-router.get('/:id', getCampground, catchAsync(campgrounds.showCG));
 
-//The page to edit a particular campground
-router.get('/:id/edit',
-    getCampground, 
-    isLoggedIn,
-    isAuthorized,
-    catchAsync(campgrounds.editCG));
+router.route('/:id/edit')
+    //Edit Campground Page
+    .get(getCampground, 
+        isLoggedIn,
+        isAuthorized,
+        catchAsync(campgrounds.editCG))
 
-//Edit a campground
-router.put('/:id/', getCampground, isLoggedIn, isAuthorized, validateCampground, catchAsync(campgrounds.updateCG));
+    //Edit a campground
+    .put(getCampground, 
+        isLoggedIn, 
+        isAuthorized, 
+        validateCampground, 
+        catchAsync(campgrounds.updateCG));
 
-//Delete a campground
-router.delete('/:id', getCampground, isLoggedIn, isAuthorized, catchAsync(campgrounds.destroyCG));
 
 module.exports = router;
