@@ -38,4 +38,4 @@ module.exports.destroyCG = async(req, res) => {
     await req.campground.remove();
     req.flash('success', 'Campground Deleted!');
     res.redirect('/campgrounds');
-  }
+}
