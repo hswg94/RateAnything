@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+};
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -12,6 +16,8 @@ const reviewRoutes = require('./routes/reviews');
 const session = require('express-session');
 const flash = require('connect-flash');
 const userRoutes = require('./routes/users');
+
+
 
 mongoose.set('strictQuery', false);
 db = mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
@@ -38,19 +44,18 @@ const sessionConfig = {
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(__dirname + '/public'));
 
 // define middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(session(sessionConfig));
 app.use(flash());
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 //executes on every page, and can be used on every ejs
 app.use((req, res, next) => {
@@ -59,15 +64,6 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 });
-
-// app.get('/fakeUser', async(req, res) => {
-//     const user = new User({
-//         email: 'test@gmail.com',
-//         username: 'test'
-//     });
-//     const newUser = await User.register(user, 'chicken');
-//     res.send(newUser);
-// });
 
 app.use('/', userRoutes);
 app.use("/campgrounds", campgroundRoutes);
