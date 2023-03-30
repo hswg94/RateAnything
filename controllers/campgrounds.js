@@ -20,7 +20,6 @@ module.exports.createCG = async (req, res, next) => {
     }));
     campground.author = req.user._id;
     await campground.save();
-    console.log(campground);
     req.flash('success', 'Successfully created a new campground!');
     res.redirect(`/campgrounds/${campground._id}`);
 }
@@ -35,6 +34,13 @@ module.exports.editCG = async(req, res) => {
 
 module.exports.updateCG = async(req, res) => {
     await req.campground.update({...req.body.campground});
+    const imgs = req.files.map(f => ({
+        url: f.path,
+        filename: f.filename
+    }));
+    console.log(...imgs);
+    req.campground.images.push(...imgs);
+    req.campground.save();
     req.flash('success', 'Campground Updated');
     res.redirect(`/campgrounds/${req.campground._id}`);
 }

@@ -38,7 +38,8 @@ router.route('/:id/edit')
     //Edit a campground
     .put(getCampground, 
         isLoggedIn, 
-        isAuthorized, 
+        isAuthorized,
+        upload.array('image'), 
         validateCampground, 
         catchAsync(campgrounds.updateCG));
 
