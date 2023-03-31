@@ -10,7 +10,6 @@ const upload = multer({ storage });
 
 router.get('/', (campgrounds.index));
 
-
 router.route('/new')
     //The page to create a new Campground
     .get(isLoggedIn, campgrounds.renderNewForm)
