@@ -27,11 +27,15 @@ const seedDB = async() => {
             title: `${sample(descriptors)} ${sample(places)}`,
             images: [
                 {
-                    url: '',
-                    filename: ''
+                    url: 'https://res.cloudinary.com/dvip6hzwl/image/upload/v1680002013/cld-sample-2.jpg',
+                    filename: 'mountains'
                 },
             ],
             price,
+            geometry: {
+                type: "Point",
+                coordinates: [-113.1331, 47.0202]
+            },
             description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit, reiciendis asperiores odit unde consequatur laudantium. Vel eaque vero mollitia, minus explicabo ut libero commodi nulla in sint odio ab aspernatur!',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             author: '6412c31c18b930abf7b8be6e',
