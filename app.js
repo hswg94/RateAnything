@@ -16,7 +16,7 @@ const reviewRoutes = require('./routes/reviews');
 const session = require('express-session');
 const flash = require('connect-flash');
 const userRoutes = require('./routes/users');
-
+const mongoSanitize = require('express-mongo-sanitize');
 
 
 mongoose.set('strictQuery', false);
@@ -46,15 +46,28 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname + '/public'));
 
-// define middleware
+
+//// define middleware
+
+// prevent NoSQL injection attacks by sanitizing user-supplied data
+app.use(mongoSanitize());
+// Parse URL-encoded request bodies and populate the `req.body` object
 app.use(express.urlencoded({ extended: true }));
+// Override HTTP methods such as PUT or DELETE using query parameters or headers
 app.use(methodOverride('_method'));
+// Configure and use the session middleware with the `sessionConfig` object
 app.use(session(sessionConfig));
+// Flash messages middleware for storing and retrieving messages in session
 app.use(flash());
+// Initialize Passport authentication middleware
 app.use(passport.initialize());
+// Use Passport session middleware for persistent authentication across requests
 app.use(passport.session());
+// Configure Passport to use LocalStrategy for authenticating users
 passport.use(new LocalStrategy(User.authenticate()));
+// Serialize user data to be stored in session
 passport.serializeUser(User.serializeUser());
+// Deserialize user data from session
 passport.deserializeUser(User.deserializeUser());
 
 //executes on every page, and can be used on every ejs

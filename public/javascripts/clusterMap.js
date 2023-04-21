@@ -7,6 +7,8 @@ const map = new mapboxgl.Map({
     zoom: 3
 });
 
+map.addControl(new mapboxgl.NavigationControl());
+
 map.on('load', () => {
     // Add a new source from our GeoJSON data and
     // set the 'cluster' option to true. GL-JS will
@@ -35,20 +37,20 @@ map.on('load', () => {
             'circle-color': [
                 'step',
                 ['get', 'point_count'],
-                '#51bbd6',
-                100,
-                '#f1f075',
-                750,
-                '#f28cb1'
+                'red',
+                10,
+                'orange',
+                30,
+                'yellow'
             ],
             'circle-radius': [
                 'step',
                 ['get', 'point_count'],
+                15,
+                10,
                 20,
-                100,
                 30,
-                750,
-                40
+                25
             ]
         }
     });
@@ -84,7 +86,7 @@ map.on('load', () => {
             layers: ['clusters']
         });
         const clusterId = features[0].properties.cluster_id;
-        map.getSource('earthquakes').getClusterExpansionZoom(
+        map.getSource('campgroundsData').getClusterExpansionZoom(
             clusterId,
             (err, zoom) => {
                 if (err) return;
@@ -102,10 +104,8 @@ map.on('load', () => {
     // the location of the feature, with
     // description HTML from its properties.
     map.on('click', 'unclustered-point', (e) => {
+        const text = e.features[0].properties.popUpMarkup;
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties.mag;
-        const tsunami =
-            e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
 
         // Ensure that if the map is zoomed out such that
         // multiple copies of the feature are visible, the
@@ -116,9 +116,7 @@ map.on('load', () => {
 
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML(
-                `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
-            )
+            .setHTML(text)
             .addTo(map);
     });
 
