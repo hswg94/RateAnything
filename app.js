@@ -17,10 +17,13 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const userRoutes = require('./routes/users');
 const mongoSanitize = require('express-mongo-sanitize');
-
+const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
 
 mongoose.set('strictQuery', false);
-db = mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+
+// Connect to MongoDB
+mongoose.connect(process.env.DB_URL)
     .then(() => {
         console.log("Connection OPEN!!!");
     })
@@ -28,28 +31,48 @@ db = mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
         console.log("Connection ERROR!!!");
         console.log(err);
     });
-;
 
+// Create a MongoDB store for session data
+const store = MongoStore.create({
+    mongoUrl: process.env.DB_URL,
+    touchAfter: 24 * 60 * 60, // Update session data only once per day
+    crypto: {
+        secret: 'thisshouldbeabettersecret!' // Set a secret for encrypting session data
+    }
+});
+
+// Handle errors for MongoStore
+store.on("error", (e) => {
+    console.log("Session Store Error: ", e);
+});
+
+// Configure session middleware
 const sessionConfig = {
-    secret: 'thisshouldbeabettersecret!',
+    store,
+    name: 'session',
+    secret: 'thisshouldbeabettersecret!', // Set a secret for encrypting session data
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        // secure: true, // Uncomment this line if using HTTPS to enforce secure cookies
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // Set cookie expiration time to 1 week from now
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
 
+// Set view engine and views directory
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// Serve static files from public directory
 app.use(express.static(__dirname + '/public'));
 
 
 //// define middleware
 
-// prevent NoSQL injection attacks by sanitizing user-supplied data
+// Prevent NoSQL injection attacks by sanitizing user-supplied data
 app.use(mongoSanitize());
 // Parse URL-encoded request bodies and populate the `req.body` object
 app.use(express.urlencoded({ extended: true }));
@@ -63,6 +86,7 @@ app.use(flash());
 app.use(passport.initialize());
 // Use Passport session middleware for persistent authentication across requests
 app.use(passport.session());
+app.use(helmet({ contentSecurityPolicy: false }));
 // Configure Passport to use LocalStrategy for authenticating users
 passport.use(new LocalStrategy(User.authenticate()));
 // Serialize user data to be stored in session
@@ -70,7 +94,7 @@ passport.serializeUser(User.serializeUser());
 // Deserialize user data from session
 passport.deserializeUser(User.deserializeUser());
 
-//executes on every page, and can be used on every ejs
+//Executed on every page
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
