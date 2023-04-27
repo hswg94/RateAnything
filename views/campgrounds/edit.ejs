@@ -13,13 +13,15 @@
                 </div>
                 <div class="mb-3">
                     <label for="formFileMultiple" class="form-label">Add Images:</label>
-                    <input class="form-control" type="file" name="image" id="formFileMultiple" multiple>
+                    <input class="form-control" type="file" name="image" id="formFileMultiple"  multiple>
+                    <div class="invalid-size">File size exceeds 1MB</div>
                 </div>
                 <div class="mb-3">
-                    <label for="basic-url" class="form-label">Campground Price:</label>
+                    <label for="price" class="form-label">Campground Price:</label>
                     <div class="input-group">
                         <span class="input-group-text" id="price-label">$</span>
                         <input type="text" class="form-control" id="price" aria-label="price" aria-describedby="price-label" name="campground[price]" value="<%=campground.price%>" required>
+                        <div class="invalid-price">Price must be a positive number</div>
                     </div>
                 </div>
                 <div class="mb-3">
