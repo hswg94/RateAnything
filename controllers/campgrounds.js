@@ -31,7 +31,6 @@ module.exports.createCG = async (req, res, next) => {
     }));
     campground.author = req.user._id;
     await campground.save();
-    console.log(campground);
     req.flash('success', 'Successfully created a new campground!');
     res.redirect(`/campgrounds/${campground._id}`);
 };
