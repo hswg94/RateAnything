@@ -22,8 +22,9 @@ router.route('/new')
 
 router.route('/:id')
     //Display a campground
-    .get(getCampground, catchAsync(campgrounds.showCG))
-    
+    .get(getCampground, catchAsync(campgrounds.showCG));
+
+router.route('/:id/delete')
     //Delete a campground
     .delete(getCampground, isLoggedIn, isAuthorized, catchAsync(campgrounds.destroyCG));
 
