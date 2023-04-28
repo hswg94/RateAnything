@@ -26,7 +26,10 @@ router.route('/:id')
 
 router.route('/:id/delete')
     //Delete a campground
-    .delete(getCampground, isLoggedIn, isAuthorized, catchAsync(campgrounds.destroyCG));
+    .delete(getCampground, 
+            isLoggedIn, 
+            isAuthorized, 
+            catchAsync(campgrounds.destroyCG));
 
 router.route('/:id/edit')
     //Edit Campground Page

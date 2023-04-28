@@ -1,5 +1,6 @@
 //A home page that shows all campgrounds
 const Campground = require('../models/campground.js');
+const Review = require('../models/review.js');
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const { cloudinary } = require('../cloudinary');
@@ -70,7 +71,9 @@ module.exports.updateCG = async(req, res) => {
 };
 
 module.exports.destroyCG = async(req, res) => {
-    await req.campground.remove();
+    const { id } = req.params;
+    await Review.deleteMany({ campground: id });
+    await Campground.findByIdAndDelete(id);
     req.flash('success', 'Campground Deleted!');
     res.redirect('/campgrounds');
-};
+  };
