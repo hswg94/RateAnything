@@ -5,18 +5,18 @@
       <div class="card mb-3" style="width: 25rem;">
         <div id="campgroundCarousel" class="card-img-top carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#campgroundCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#campgroundCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#campgroundCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <% campground.images.forEach((img, i) => { %>
+              <button type="button" data-bs-target="#campgroundCarousel" data-bs-slide-to="<%= i %>" class="<%= i === 0 ? 'active' : '' %>" aria-current="<%= i === 0 ? 'true' : 'false' %>" aria-label="Slide <%= i + 1 %>"></button>
+            <% }) %>
           </div>
           <div class="carousel-inner">
-            <% campground.images.forEach((img, i)=> { %>
-              <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
-                <img crossorigin="anonymous" class="d-block w-100" src="<%=img.url%>" alt="">
+            <% campground.images.forEach((img, i) => { %>
+              <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                <img crossorigin="anonymous" class="d-block w-100" src="<%= img.url %>" alt="">
               </div>
-              <% }) %>
+            <% }) %>
           </div>
-          <% if (campground.images.length> 1) { %>
+          <% if (campground.images.length > 1) { %>
             <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
@@ -25,7 +25,7 @@
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
-            <% } %>
+          <% } %>
         </div>
         <div class="card-body">
           <h5 class="card-title">

@@ -30,7 +30,7 @@
             <script>
                 const fileInput = document.querySelector('#formFileMultiple');
                 const maxSize = 10 * 1024 * 1024; // 1MB in bytes
-                const invalidSize = document.querySelector('.invalid-size');
+                const invalidSize = document.querySelector('#invalid-size');
                 invalidSize.style.display = 'none';
                 fileInput.addEventListener('change', function () {
                     const file = this.files[0];
@@ -42,17 +42,25 @@
                     }
                 });
 
-                const priceInput = document.querySelector('#price');
-                const invalidPrice = document.querySelector('.invalid-price');
-                invalidPrice.style.display = 'none';
-                priceInput.addEventListener('change', function () {
-                    if (this.value < 0) {
-                        this.value = null;
-                        invalidPrice.style.display = 'block';
-                    } else {
-                        invalidPrice.style.display = 'none';
-                    }
-                });
+                (function () {
+                    'use strict'
+
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.querySelectorAll('.needs-validation')
+
+                    // Loop over them and prevent submission
+                    Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                }
+
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+                })()  
             </script>
 </body>
 
