@@ -1,4 +1,5 @@
 const BaseJoi = require('joi');
+const JoiObjectId = require('joi-objectid');
 const sanitizeHtml = require('sanitize-html');
 
 const extension = (joi) => ({
@@ -22,11 +23,20 @@ const extension = (joi) => ({
 });
 
 const Joi = BaseJoi.extend(extension)
+Joi.objectId = JoiObjectId(Joi);
 
 module.exports.campgroundSchema = Joi.object({
     campground: Joi.object({
         title: Joi.string().required().escapeHTML(),
-        price: Joi.number().required().min(0),
+        images: Joi.array().items(Joi.object({
+            url: Joi.string().uri(),
+            filename: Joi.string()
+        })),
+        geometry: Joi.object({
+            type: Joi.string().valid('Point').escapeHTML(),
+            coordinates: Joi.array().items(Joi.number()).length(2)
+        }),
+        price: Joi.number().min(0).required(),
         location: Joi.string().required().escapeHTML(),
         description: Joi.string().required().escapeHTML()
     }).required(),

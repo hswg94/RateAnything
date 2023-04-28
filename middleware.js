@@ -12,6 +12,11 @@ module.exports.validateCampground = async(req, res, next) => {
     }
 };
 
+module.exports.setAuthor = (req, res, next) => {
+    req.body.campground.author = req.user._id;
+    next();
+};
+
 module.exports.getCampground = async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id)
