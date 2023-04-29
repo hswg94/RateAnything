@@ -1,7 +1,4 @@
-if (process.env.NODE_ENV !== "production") {
-    require('dotenv').config();
-};
-
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -37,7 +34,7 @@ const store = MongoStore.create({
     mongoUrl: process.env.DB_URL,
     touchAfter: 24 * 60 * 60, // Update session data only once per day
     crypto: {
-        secret: 'thisshouldbeabettersecret!' // Set a secret for encrypting session data
+        secret: process.env.SESSION_SECRET // Set a secret for encrypting session data
     }
 });
 
@@ -47,19 +44,20 @@ store.on("error", (e) => {
 });
 
 // Configure session middleware
+
 const sessionConfig = {
     store,
     name: 'session',
-    secret: 'thisshouldbeabettersecret!', // Set a secret for encrypting session data
+    secret: process.env.SESSION_SECRET, // Set a secret for encrypting session data
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        // secure: true, // Uncomment this line if using HTTPS to enforce secure cookies
+        secure: process.env.NODE_ENV === 'production', // Set secure flag if in production
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // Set cookie expiration time to 1 week from now
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
-}
+};
 
 // Set view engine and views directory
 app.engine('ejs', ejsMate);
@@ -111,5 +109,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log("Port 3000 Initialized");
+    console.log("Application Initialized");
 });
