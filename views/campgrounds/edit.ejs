@@ -6,11 +6,11 @@
                 <div class="border rounded p-3 bg-light mb-3">
                     <div class="mb-3">
                         <label class="form-label" for="title">Title: </label>
-                        <input class="form-control" type="text" name="campground[title]" id="title" value="<%=campground.title%>" required>
+                        <input class="form-control" type="text" name="campground[title]" id="title" value="<%=campground.title%>" maxlength="30" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="location">Location: </label>
-                        <input class="form-control" type="text" name="campground[location]" id="location" value="<%=campground.location%>" required>
+                        <input class="form-control" type="text" name="campground[location]" id="location" value="<%=campground.location%>" maxlength="50" required>
                     </div>
                     <div class="mb-3">
                         <label for="formFileMultiple" class="form-label">Add Images:</label>
@@ -24,13 +24,13 @@
                         <label for="price" class="form-label">Campground Price:</label>
                         <div class="input-group">
                             <span class="input-group-text" id="price-label">$</span>
-                            <input type="text" class="form-control" id="price" aria-label="price" aria-describedby="price-label" name="campground[price]" value="<%=campground.price%>" pattern="[0-9]+" required>
+                            <input type="text" class="form-control" id="price" aria-label="price" aria-describedby="price-label" name="campground[price]" value="<%=campground.price%>" pattern="[0-9]+" maxlength="10" required>
                             <div class="invalid-feedback">Price must be a positive number</div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="description">Description: </label>
-                        <textarea class="form-control" type="text" name="campground[description]" id="description" required><%=campground.description%></textarea>
+                        <textarea class="form-control" type="text" name="campground[description]" id="description" maxlength="500" required><%=campground.description%></textarea>
                     </div>
                 </div>
                 <% if (campground.images.length > 0) { %>

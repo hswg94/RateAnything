@@ -61,7 +61,7 @@
       <form action="/campgrounds/<%=campground._id%>/reviews" method="POST">
           <div class="mb-3">
             <h4>Write a Review</h4>
-            <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+            <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" maxlength="300" required></textarea>
           </div>
           <div class="d-flex justify-content-between align-items-start">
               <fieldset class="starability-basic">
