@@ -1,8 +1,9 @@
 const Campground = require('./models/campground.js');
 const ExpressError = require('./utils/ExpressError');
 const { campgroundSchema } = require('./schemas');
+const catchAsync = require('./utils/catchAsync.js');
 
-module.exports.validateCampground = async(req, res, next) => {
+module.exports.validateCampground = catchAsync(async(req, res, next) => {
     const { error } = campgroundSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
@@ -10,14 +11,9 @@ module.exports.validateCampground = async(req, res, next) => {
     } else {
         next();
     }
-};
+});
 
-module.exports.setAuthor = (req, res, next) => {
-    req.body.campground.author = req.user._id;
-    next();
-};
-
-module.exports.getCampground = async (req, res, next) => {
+module.exports.getCampground = catchAsync(async(req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id)
     .populate('author')
@@ -35,7 +31,7 @@ module.exports.getCampground = async (req, res, next) => {
     }
     req.campground = campground;
     next();
-};
+});
 
 module.exports.isLoggedIn = (req, res, next) => {
     if(!req.isAuthenticated()){

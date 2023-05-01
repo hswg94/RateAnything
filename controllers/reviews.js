@@ -1,7 +1,8 @@
 const Campground = require('../models/campground.js');
 const Review = require('../models/review');
+const catchAsync = require('../utils/catchAsync.js');
 
-module.exports.createReview = async(req, res, next) => {
+module.exports.createReview = catchAsync(async(req, res, next) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
     review.author = req.user._id;
@@ -10,10 +11,10 @@ module.exports.createReview = async(req, res, next) => {
     await campground.save();
     req.flash('success', 'Created new review!');
     res.redirect(`/campgrounds/${campground._id}`);
-}
+});
 
-module.exports.destroyReview = async(req, res) => {
+module.exports.destroyReview = catchAsync(async(req, res) => {
     await Review.findByIdAndDelete(req.params.reviewId);
     req.flash('success', 'Review Deleted!');
     res.redirect(`/campgrounds/${req.params.id}`)
-}
+});

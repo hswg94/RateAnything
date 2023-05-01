@@ -7,18 +7,19 @@ const { cloudinary } = require('../cloudinary');
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding.js");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+const catchAsync = require('../utils/catchAsync.js');
 
 
-module.exports.index = router.get('/', async(req, res) => {
+module.exports.index = router.get('/', catchAsync(async(req, res) => {
     const campgrounds = await Campground.find({});
     res.render('campgrounds/index', { campgrounds });
-});
+}));
 
 module.exports.renderNewForm = (req, res) => {
     res.render('campgrounds/new');
 };
 
-module.exports.createCG = async (req, res, next) => {
+module.exports.createCG = catchAsync(async(req, res, next) => {
     const geoData = await geocoder.forwardGeocode({
         query: req.body.campground.location,
         limit: 1
@@ -36,7 +37,7 @@ module.exports.createCG = async (req, res, next) => {
     await campground.save();
     req.flash('success', 'Successfully created a new campground!');
     res.redirect(`/campgrounds/${campground._id}`);
-};
+});
 
 module.exports.showCG = async(req, res) => {
     res.render('campgrounds/show', { campground: req.campground });
@@ -46,7 +47,7 @@ module.exports.editCG = async(req, res) => {
     res.render('campgrounds/edit', { campground: req.campground });
 };
 
-module.exports.updateCG = async(req, res) => {
+module.exports.updateCG = catchAsync(async(req, res) => {
     await req.campground.update({...req.body.campground});
     const imgs = req.files.map(f => ({
         url: f.path,
@@ -71,12 +72,12 @@ module.exports.updateCG = async(req, res) => {
     await req.campground.save();
     req.flash('success', 'Campground Updated');
     res.redirect(`/campgrounds/${req.campground._id}`);
-};
+});
 
-module.exports.destroyCG = async(req, res) => {
+module.exports.destroyCG = catchAsync(async(req, res) => {
     const { id } = req.params;
     await Review.deleteMany({ campground: id });
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Campground Deleted!');
     res.redirect('/campgrounds');
-  };
+});

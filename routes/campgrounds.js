@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const catchAsync = require('../utils/catchAsync.js');
+
 const { setAuthor, validateCampground, getCampground, isLoggedIn, isAuthorized } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
 const multer = require('multer');
@@ -12,32 +12,39 @@ router.get('/', (campgrounds.index));
 
 router.route('/new')
     //The page to create a new Campground
-    .get(isLoggedIn, campgrounds.renderNewForm)
+    .get(isLoggedIn, 
+        campgrounds.renderNewForm
+    )
 
     //Create new Campground
     .post(isLoggedIn,
         upload.array('image'), 
-        // setAuthor,
         validateCampground, 
-        catchAsync(campgrounds.createCG));
+        campgrounds.createCG
+    );
 
+    
 router.route('/:id')
     //Display a campground
-    .get(getCampground, catchAsync(campgrounds.showCG));
+    .get(getCampground, 
+        campgrounds.showCG
+    );
 
 router.route('/:id/delete')
     //Delete a campground
     .delete(getCampground, 
             isLoggedIn, 
             isAuthorized, 
-            catchAsync(campgrounds.destroyCG));
+            campgrounds.destroyCG
+    );
 
 router.route('/:id/edit')
     //Edit Campground Page
     .get(getCampground, 
         isLoggedIn,
         isAuthorized,
-        catchAsync(campgrounds.editCG))
+        campgrounds.editCG
+    )
 
     //Edit a campground
     .put(getCampground, 
@@ -45,6 +52,7 @@ router.route('/:id/edit')
         isAuthorized,
         upload.array('image'), 
         validateCampground, 
-        catchAsync(campgrounds.updateCG));
+        campgrounds.updateCG
+    );
 
 module.exports = router;

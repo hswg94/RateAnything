@@ -7,7 +7,7 @@ const Review = require('../models/review');
 const review = require('../controllers/reviews')
 const { isLoggedIn } = require('../middleware');
 
-const validateReview = (req, res, next) => {
+const validateReview = catchAsync(async(req, res, next) => {
     const { error } = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
@@ -15,7 +15,7 @@ const validateReview = (req, res, next) => {
     } else {
         next();
     }
-};
+});
 
 const isAuthorized = async(req, res, next) => {
     const { id, reviewId } = req.params;
@@ -28,9 +28,15 @@ const isAuthorized = async(req, res, next) => {
 }
 
 //Create a new review
-router.post('/', isLoggedIn, validateReview, catchAsync(review.createReview));
+router.post('/', isLoggedIn, 
+            validateReview, 
+            review.createReview
+);
 
 //Deletes a review
-router.delete('/:reviewId', isLoggedIn, isAuthorized, catchAsync(review.destroyReview));
+router.delete('/:reviewId', isLoggedIn, 
+                isAuthorized, 
+                review.destroyReview
+);
 
 module.exports = router;
