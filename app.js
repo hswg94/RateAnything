@@ -56,7 +56,7 @@ const sessionConfig = {
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // Set secure flag if in production
+    //secure: process.env.NODE_ENV === "production", // Set secure flag if in production
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // Set cookie expiration time to 1 week from now
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
