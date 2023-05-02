@@ -34,12 +34,14 @@ module.exports.getCampground = catchAsync(async(req, res, next) => {
 });
 
 module.exports.isLoggedIn = (req, res, next) => {
-    if(!req.isAuthenticated()){
-        req.flash('error', 'You must be signed in!');
+    if (!req.isAuthenticated()) {
+        req.session.returnTo = req.originalUrl
+        console.log(req.session.returnTo);
+        req.flash('error', 'You must be signed in first!');
         return res.redirect('/login');
     }
     next();
-};
+}
 
 module.exports.isAuthorized = async(req, res, next) => {
     const { id } = req.params;
