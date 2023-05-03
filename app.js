@@ -136,5 +136,5 @@ app.use((err, req, res, next) => {
 
 //app listener
 app.listen(3000, () => {
-  console.log("Serving on port 3000");
+  console.log("Application Initialized");
 });
