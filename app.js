@@ -46,8 +46,10 @@ store.on("error", (e) => {
   console.log("Session Store Error: ", e);
 });
 
-// Configure session middleware
+// Parse URL-encoded request bodies and populate the `req.body` object
+app.use(express.urlencoded({ extended: true }));
 
+// Configure session middleware
 const sessionConfig = {
   store,
   name: "session",
@@ -74,8 +76,7 @@ app.use(express.static(__dirname + "/public"));
 
 // Prevent NoSQL injection attacks by sanitizing user-supplied data
 app.use(mongoSanitize());
-// Parse URL-encoded request bodies and populate the `req.body` object
-app.use(express.urlencoded({ extended: true }));
+
 // Override HTTP methods such as PUT or DELETE using query parameters or headers
 app.use(methodOverride("_method"));
 // Configure and use the session middleware with the `sessionConfig` object
@@ -116,11 +117,14 @@ app.all("*", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  // if (err.name) {
-  //     return res.send("An error has occured!");
-  // };
+  
   console.error(err.stack);
-  const { statusCode = 500 } = err;
+  let { statusCode = 500 } = err;
+
+  if(err.name === 'CastError'){
+    statusCode = 400;
+  };
+
   message = `${statusCode}` + " " + http.STATUS_CODES[statusCode];
   // res.status(statusCode).send(message);
   if (process.env.NODE_ENV !== "production") {
