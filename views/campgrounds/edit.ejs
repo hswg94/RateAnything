@@ -1,8 +1,8 @@
 <% layout('/layouts/boilerplate')%>
     <div class="row">
         <div class="col-8 offset-2">
-            <h1 class="text-center mb-3">Edit Campground</h1>
-            <form action="/campgrounds/<%=campground._id%>/edit?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <h1 class="text-center mb-3">Edit Item</h1>
+            <form action="/items/<%=campground._id%>/edit?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <div class="border rounded p-3 bg-light mb-3">
                     <div class="mb-3">
                         <label class="form-label" for="title">Title: </label>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="price" class="form-label">Campground Price:</label>
+                        <label for="price" class="form-label">Item Price:</label>
                         <div class="input-group">
                             <span class="input-group-text" id="price-label">$</span>
                             <input type="text" class="form-control" id="price" aria-label="price" aria-describedby="price-label" name="campground[price]" value="<%=campground.price%>" pattern="[0-9]+" maxlength="10" required>
@@ -59,7 +59,7 @@
                 </div>
             </form>
             <footer>
-                <a href="/campgrounds/<%=campground._id%>">Back</a>
+                <a href="/items/<%=campground._id%>">Back</a>
             </footer>
         </div>
     </div>

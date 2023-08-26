@@ -15,8 +15,8 @@ module.exports.register = async(req, res) => {
             }
         });
         req.flash('success', 'Registration Successful!');
-        res.redirect('/campgrounds');
-        
+        res.redirect('/items');
+
     } catch (e) {
         req.flash('error', e.message);
         res.redirect('/register');
@@ -30,7 +30,7 @@ module.exports.renderLogin = (req, res) => {
 module.exports.login = (req, res) => {
     req.flash('success', 'Welcome Back!');
     console.log(req.session.returnTo);
-    const redirectUrl = req.session.returnTo || '/campgrounds';
+    const redirectUrl = req.session.returnTo || '/items';
     if (req.session.returnTo) {
         delete req.session.returnTo;
     }

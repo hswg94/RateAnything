@@ -45,11 +45,11 @@
         </ul>
         <% if(currentUser && campground.author.equals(currentUser._id)) { %>
           <div class="card-body">
-            <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-warning">Edit</a>
-            <form class="d-inline" action="/campgrounds/<%=campground._id%>/delete?_method=DELETE" method="POST">
+            <a href="/items/<%=campground._id%>/edit" class="card-link btn btn-warning">Edit</a>
+            <form class="d-inline" action="/items/<%=campground._id%>/delete?_method=DELETE" method="POST">
               <button class="btn btn-danger">Delete</button>
             </form>
-            <a class="btn btn-info" href="/campgrounds">Back</a>
+            <a class="btn btn-info" href="/items">Back</a>
           </div>
           <% } %>
       </div>
@@ -58,7 +58,7 @@
     <div class="col-md-6 d-flex flex-column">
       <div class="mb-3 flex-grow-1" id='map' style= 'height: 300px;'></div>
       
-      <form action="/campgrounds/<%=campground._id%>/reviews" method="POST">
+      <form action="/items/<%=campground._id%>/reviews" method="POST">
           <div class="mb-3">
             <h4>Write a Review</h4>
             <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" maxlength="300" required></textarea>
@@ -96,7 +96,7 @@
         <p class="card-text"><%=review.body%></p>
       
         <% if(currentUser && review.author._id.equals(currentUser._id)) { %>
-        <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+        <form action="/items/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
           <button class="btn btn-danger">Delete</button>
         </form>
         <% } %>

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 
 const { setAuthor, validateCampground, getCampground, isLoggedIn, isAuthorized } = require('../middleware');
-const campgrounds = require('../controllers/campgrounds');
+const campgrounds = require('../controllers/items');
 const multer = require('multer');
 const { storage } = require('../cloudinary');
 const upload = multer({ storage });
@@ -23,7 +23,7 @@ router.route('/new')
         campgrounds.createCG
     );
 
-    
+
 router.route('/:id')
     //Display a campground
     .get(getCampground, 

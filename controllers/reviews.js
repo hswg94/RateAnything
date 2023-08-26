@@ -10,11 +10,11 @@ module.exports.createReview = catchAsync(async(req, res, next) => {
     await review.save();
     await campground.save();
     req.flash('success', 'Created new review!');
-    res.redirect(`/campgrounds/${campground._id}`);
+    res.redirect(`/items/${campground._id}`);
 });
 
 module.exports.destroyReview = catchAsync(async(req, res) => {
     await Review.findByIdAndDelete(req.params.reviewId);
     req.flash('success', 'Review Deleted!');
-    res.redirect(`/campgrounds/${req.params.id}`)
+    res.redirect(`/items/${req.params.id}`)
 });

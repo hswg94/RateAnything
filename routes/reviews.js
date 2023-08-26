@@ -22,7 +22,7 @@ const isAuthorized = async(req, res, next) => {
     const review = await Review.findById(reviewId);
     if (!review.author.equals(req.user._id)) {
         req.flash('error', 'You do not have permission to do that!');
-        return res.redirect(`/campgrounds/${id}`);
+        return res.redirect(`/items/${id}`);
     }
     next();
 }

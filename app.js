@@ -9,7 +9,7 @@ const ejsMate = require("ejs-mate");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
-const campgroundRoutes = require("./routes/campgrounds");
+const campgroundRoutes = require("./routes/items");
 const reviewRoutes = require("./routes/reviews");
 const flash = require("connect-flash");
 const userRoutes = require("./routes/users");
@@ -104,8 +104,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/", userRoutes);
-app.use("/campgrounds", campgroundRoutes);
-app.use("/campgrounds/:id/reviews", reviewRoutes);
+app.use("/items", campgroundRoutes);
+app.use("/items/:id/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -117,7 +117,7 @@ app.all("*", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  
+
   console.error(err.stack);
   let { statusCode = 500 } = err;
 

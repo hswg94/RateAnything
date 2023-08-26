@@ -3,7 +3,7 @@ const Campground = require('../models/campground.js');
 const Review = require('../models/review.js');
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const { cloudinary } = require('../cloudinary');
+const { cloudinary } = require('../cloudinary/index.js');
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding.js");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
@@ -36,7 +36,7 @@ module.exports.createCG = catchAsync(async(req, res, next) => {
     campground.author = req.user._id;
     await campground.save();
     req.flash('success', 'Successfully created a new campground!');
-    res.redirect(`/campgrounds/${campground._id}`);
+    res.redirect(`/items/${campground._id}`);
 });
 
 module.exports.showCG = async(req, res) => {
@@ -53,7 +53,7 @@ module.exports.updateCG = catchAsync(async(req, res) => {
         url: f.path,
         filename: f.filename
     }));
-    
+
     req.campground.images.push(...imgs);
     if (req.body.deleteImages) {
         for (let filename of req.body.deleteImages){
@@ -71,7 +71,7 @@ module.exports.updateCG = catchAsync(async(req, res) => {
     }
     await req.campground.save();
     req.flash('success', 'Campground Updated');
-    res.redirect(`/campgrounds/${req.campground._id}`);
+    res.redirect(`/items/${req.campground._id}`);
 });
 
 module.exports.destroyCG = catchAsync(async(req, res) => {
@@ -79,5 +79,5 @@ module.exports.destroyCG = catchAsync(async(req, res) => {
     await Review.deleteMany({ campground: id });
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Campground Deleted!');
-    res.redirect('/campgrounds');
+    res.redirect('/items');
 });
