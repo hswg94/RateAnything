@@ -21,11 +21,18 @@
       href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css"
       rel="stylesheet"
     />
+    <style>
+      main {
+        background-image: url("/Image.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+    </style>
   </head>
 
   <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar')%>
-    <main class="container">
+    <main class="flex-grow-1">
       <%- include('../partials/flash')%> <%- body %>
     </main>
     <%- include('../partials/footer')%>

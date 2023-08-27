@@ -1,46 +1,98 @@
 <% layout('/layouts/boilerplate')%>
-    <div class="row">
-        <div class="col-8 offset-2">
-            <h1 class="text-center mb-3">New Item</h1>
-            <form action="/items/new" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-                <div class="border rounded p-3 bg-light mb-3">
-                    <div class="mb-3">
-                        <label class="form-label" for="title">Title: </label>
-                        <input class="form-control" type="text" name="campground[title]" id="title" maxlength="30" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="location">Location: </label>
-                        <input class="form-control" type="text" name="campground[location]" id="location" maxlength="50" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFileMultiple" class="form-label">Add Images:</label>
-                        <div>File size limit: 10MB</div>
-                        <input class="form-control" type="file" name="image" id="formFileMultiple" multiple>
-                        <div id="invalid-size" class="alert alert-danger mt-2 py-2" role="alert">
-                            File size limit exceeded!
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="price" class="form-label">Item Price:</label>
-                        <div class="input-group">
-                            <span class="input-group-text" id="price-label">$</span>
-                            <input type="text" class="form-control" id="price" aria-label="price" aria-describedby="price-label" name="campground[price]" pattern="[0-9]+" maxlength="10" required>
-                            <div class="invalid-feedback">Price must be a positive number</div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="description">Description: </label>
-                        <textarea class="form-control" type="text" name="campground[description]" id="description" maxlength="500" required></textarea>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <button class="btn btn-success">Add</button>
-                </div>
-            </form>
-            <footer>
-                <a href="/items">Back</a>
-            </footer>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col" style="max-width: 600px">
+      <h1 class="text-center mb-3">New Item</h1>
+      <form
+        action="/items/new"
+        method="POST"
+        enctype="multipart/form-data"
+        class="needs-validation"
+        novalidate
+      >
+        <div class="border rounded bg-light p-3 mb-3">
+          <div class="mb-3">
+            <label class="form-label" for="title">Title: </label>
+            <input
+              class="form-control"
+              type="text"
+              name="campground[title]"
+              id="title"
+              maxlength="30"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="location">Location: </label>
+            <input
+              class="form-control"
+              type="text"
+              name="campground[location]"
+              id="location"
+              maxlength="50"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="formFileMultiple" class="form-label">Add Images:</label>
+            <div>File size limit: 10MB</div>
+            <input
+              class="form-control"
+              type="file"
+              name="image"
+              id="formFileMultiple"
+              multiple
+            />
+            <div
+              id="invalid-size"
+              class="alert alert-danger mt-2 py-2"
+              role="alert"
+            >
+              File size limit exceeded!
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Item Price:</label>
+            <div class="input-group">
+              <span class="input-group-text" id="price-label">$</span>
+              <input
+                type="text"
+                class="form-control"
+                id="price"
+                aria-label="price"
+                aria-describedby="price-label"
+                name="campground[price]"
+                pattern="[0-9]+"
+                maxlength="10"
+                required
+              />
+              <div class="invalid-feedback">
+                Price must be a positive number
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="description">Description: </label>
+            <textarea
+              class="form-control"
+              type="text"
+              name="campground[description]"
+              id="description"
+              maxlength="500"
+              required
+            ></textarea>
+          </div>
         </div>
+        <div class="mb-3">
+          <button class="btn btn-success">Add</button>
+        </div>
+      </form>
+      <footer>
+        <a href="/items">Back</a>
+      </footer>
     </div>
-    <script src="/javascripts/formImageValidator.js"></script>
-    <script src="/javascripts/formValidator.js"></script>
+  </div>
+</div>
+
+<script src="/javascripts/formImageValidator.js"></script>
+<script src="/javascripts/formValidator.js"></script>

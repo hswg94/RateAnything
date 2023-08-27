@@ -1,35 +1,58 @@
 <% layout('/layouts/boilerplate')%>
 <div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-lg-4 col-md-6 col-sm-8">
-            <h1 class="text-center mb-4">Register</h1>
-            <form action="/register" method="POST" class="needs-validation" novalidate>
-                <div class="mb-3">
-                    <label class="form-label" for="email">Email: </label>
-                    <input class="form-control" type="email" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" maxlength="320" required>
-                    <div class="invalid-feedback">
-                        Please provide a valid email address.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="username">Username:</label>
-                    <input class="form-control" type="text" name="username" id="username" maxlength="25" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="password">Password:</label>
-                    <input class="form-control" type="password" name="password" id="password" maxlength="25" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class="d-grid">
-                    <button class="btn btn-primary" type="submit">Register</button>
-                </div>
-            </form>
+  <div class="row justify-content-center mt-5">
+    <div class="col" style="max-width: 400px">
+      <h1 class="text-center mb-4">Register</h1>
+      <form
+        action="/register"
+        method="POST"
+        class="needs-validation"
+        novalidate
+      >
+        <div class="mb-3">
+          <label class="form-label" for="email">Email: </label>
+          <input
+            class="form-control"
+            type="email"
+            name="email"
+            id="email"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            maxlength="320"
+            required
+          />
+          <div class="invalid-feedback">
+            Please provide a valid email address.
+          </div>
         </div>
+        <div class="mb-3">
+          <label class="form-label" for="username">Username:</label>
+          <input
+            class="form-control"
+            type="text"
+            name="username"
+            id="username"
+            maxlength="25"
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="password">Password:</label>
+          <input
+            class="form-control"
+            type="password"
+            name="password"
+            id="password"
+            maxlength="25"
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div class="d-grid">
+          <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 <script src="/javascripts/formValidator.js"></script>

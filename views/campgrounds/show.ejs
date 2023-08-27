@@ -1,6 +1,6 @@
 <% layout('/layouts/boilerplate') %>
-
-  <div class="row mb-3">
+<div class="container">
+  <div class="row my-5">
     <div class="col-md-6 mb-3 d-flex flex-column">
       <div class="card flex-grow-1">
         <div id="campgroundCarousel" class="card-img-top carousel slide" data-bs-ride="carousel">
@@ -39,7 +39,7 @@
           <li class="list-group-item text-muted">
             <%=campground.location%>
           </li>
-          <li class="list-group-item">$<%=campground.price%>/night</li>
+          <li class="list-group-item">$<%=campground.price%></li>
           <li class="list-group-item">Submitted by: <%=campground.author.username%>
           </li>
         </ul>
@@ -56,12 +56,12 @@
     </div>
 
     <div class="col-md-6 d-flex flex-column">
-      <div class="mb-3 flex-grow-1" id='map' style= 'height: 300px;'></div>
+      <div class="mb-3 flex-grow-1 rounded-3" id='map' style= 'height: 300px;'></div>
       
       <form action="/items/<%=campground._id%>/reviews" method="POST">
           <div class="mb-3">
             <h4>Write a Review</h4>
-            <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" maxlength="300" required></textarea>
+            <textarea class="form-control bg-light" name="review[body]" id="body" cols="30" rows="3" maxlength="300" required></textarea>
           </div>
           <div class="d-flex justify-content-between align-items-start">
               <fieldset class="starability-basic">
@@ -77,32 +77,36 @@
                 <input type="radio" id="first-rate5" name="review[rating]" value="5" />
                 <label for="first-rate5" title="Amazing">5 stars</label>
               </fieldset>
-            <button class="btn btn-success">Submit</button>
+            <button class="btn btn-dark">Submit</button>
           </div>
       </form>
     </div>
   </div>
 
-  <h3>Reviews</h3>
+  <% if (campground.reviews.length !== 0) { %>
+    <h3>Reviews</h3>
+  <% } %>
   <% for (let review of campground.reviews) { %>
-    <div class="card mb-3">
+    <div class="card mb-3 bg-light">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0"><%=review.author.username%></h5>
         <div class ="starability-result" data-rating="<%= review.rating %>">
           Rated: <%= review.rating %> stars
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body bg-light">
         <p class="card-text"><%=review.body%></p>
-      
+
         <% if(currentUser && review.author._id.equals(currentUser._id)) { %>
         <form action="/items/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
-          <button class="btn btn-danger">Delete</button>
+          <button class="btn btn-dark">Delete</button>
         </form>
         <% } %>
       </div>
     </div>
   <% } %>
+
+</div>
 
 <script>
   const mapToken = '<%-process.env.MAPBOX_TOKEN%>';

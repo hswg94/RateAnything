@@ -15,7 +15,7 @@ module.exports.register = async(req, res) => {
             }
         });
         req.flash('success', 'Registration Successful!');
-        res.redirect('/items');
+        res.redirect('/login');
 
     } catch (e) {
         req.flash('error', e.message);
