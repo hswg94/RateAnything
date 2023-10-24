@@ -120,7 +120,7 @@ app.all("*", (req, res, next) => {
 app.use((err, req, res, next) => {
 
   console.error(err.stack);
-  let { statusCode = 500 } = err;
+  let statusCode = err.statusCode || 500;
 
   if(err.name === 'CastError'){
     statusCode = 400;
