@@ -126,7 +126,7 @@ app.use((err, req, res, next) => {
     statusCode = 400;
   };
 
-  message = `${statusCode}` + " " + http.STATUS_CODES[statusCode];
+  let message = `${statusCode}` + " " + http.STATUS_CODES[statusCode];
   // res.status(statusCode).send(message);
   if (process.env.NODE_ENV !== "production") {
     res.render("error", { message, err });
