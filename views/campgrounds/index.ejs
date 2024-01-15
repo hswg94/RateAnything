@@ -29,6 +29,10 @@
     </div>
   </div>
   <%}%>
+
+  <% if (!campgrounds.length) { %>
+    <h1>Oops! There are no listings available. <a href="/items/new"> Submit one</a></h1>
+  <% } %>
 </div>
 
 <script>

@@ -104,21 +104,16 @@ app.use((req, res, next) => {
   next();
 });
 
+
+
 app.use("/", userRoutes);
 app.use("/items", campgroundRoutes);
 app.use("/items/:id/reviews", reviewRoutes);
-
 app.get("/", (req, res) => {
   res.render("home");
 });
 
-//error handler middleware
-app.all("*", (req, res, next) => {
-  next(new ExpressError("Page Not Found", 404));
-});
-
 app.use((err, req, res, next) => {
-
   console.error(err.stack);
   let statusCode = err.statusCode || 500;
 
@@ -133,6 +128,11 @@ app.use((err, req, res, next) => {
   } else {
     res.render("error", { message });
   }
+});
+
+//error handler middleware
+app.all("*", (req, res, next) => {
+  next(new ExpressError("Page Not Found", 404));
 });
 
 //app listener

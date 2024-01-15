@@ -9,7 +9,7 @@ module.exports.createReview = catchAsync(async(req, res, next) => {
     campground.reviews.push(review);
     await review.save();
     await campground.save();
-    req.flash('success', 'Created new review!');
+    req.flash('success', 'Your review has been created successfully!');
     res.redirect(`/items/${campground._id}`);
 });
 

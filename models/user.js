@@ -7,6 +7,11 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 

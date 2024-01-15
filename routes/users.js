@@ -11,6 +11,7 @@ router.route('/register')
 
 router.route('/login')
   .get(user.renderLogin)
+  //automatically grabs credentials from password and username in the page body
   .post(passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), user.login);
 
 router.get('/logout', user.logout);

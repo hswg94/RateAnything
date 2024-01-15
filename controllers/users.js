@@ -4,19 +4,20 @@ module.exports.renderRegister = (req, res) => {
     res.render('users/register');
 };
 
-module.exports.register = async(req, res) => {
+module.exports.register = async (req, res) => {
     try {
-        const {email, username, password} = req.body;
-        const user = new User({email, username});
+        const { email, username, password } = req.body;
+        const user = new User({ email, username, isAdmin: false });
         const registeredUser = await User.register(user, password);
-        req.login(registeredUser, err => {
+        // Log in the user after successful registration
+        await req.login(registeredUser, (err) => {
             if (err) {
-                return next(err);
+                req.flash('There was an error logging you in, please try again!', err.message);
+                return res.redirect('/register');
             }
+            req.flash('success', 'Registration Successful!');
+            res.redirect('/');
         });
-        req.flash('success', 'Registration Successful!');
-        res.redirect('/login');
-
     } catch (e) {
         req.flash('error', e.message);
         res.redirect('/register');
@@ -29,12 +30,7 @@ module.exports.renderLogin = (req, res) => {
 
 module.exports.login = (req, res) => {
     req.flash('success', 'Welcome Back!');
-    console.log(req.session.returnTo);
-    const redirectUrl = req.session.returnTo || '/items';
-    if (req.session.returnTo) {
-        delete req.session.returnTo;
-    }
-    res.redirect(redirectUrl);
+    res.redirect('/items');
 };
 
 module.exports.logout = (req, res) => {
