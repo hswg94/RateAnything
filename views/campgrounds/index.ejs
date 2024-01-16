@@ -16,7 +16,11 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title"><%=campground.title%></h5>
+          <h5 class="card-title d-flex justify-content-between align-items-center">
+            <%=campground.title%>
+            <div class="starability-result" data-rating="<%= campground.rating %>">
+            </div>
+          </h5>
           <p class="card-text"><%=campground.description%></p>
           <p class="card-text">
             <small class="text-muted"><%=campground.location%></small>
@@ -28,10 +32,10 @@
       </div>
     </div>
   </div>
-  <%}%>
-
-  <% if (!campgrounds.length) { %>
-    <h1>Oops! There are no listings available. <a href="/items/new"> Submit one</a></h1>
+  <%}%> <% if (!campgrounds.length) { %>
+  <h1>
+    Oops! There are no listings available. <a href="/items/new"> Submit one</a>
+  </h1>
   <% } %>
 </div>
 
