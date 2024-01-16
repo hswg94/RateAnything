@@ -18,19 +18,13 @@ const helmet = require("helmet");
 const MongoStore = require("connect-mongo");
 const ExpressError = require("./utils/ExpressError.js");
 const http = require("http");
+const { connectDB } = require('./utils/connectDB.js')
+const port = process.env.PORT || 3000;
 
 mongoose.set("strictQuery", false);
 
 // Connect to MongoDB
-mongoose
-  .connect(process.env.DB_URL)
-  .then(() => {
-    console.log("Connection OPEN!!!");
-  })
-  .catch((err) => {
-    console.log("Connection ERROR!!!");
-    console.log(err);
-  });
+connectDB();
 
 // Create a MongoDB store for session data
 const store = MongoStore.create({
@@ -136,6 +130,6 @@ app.all("*", (req, res, next) => {
 });
 
 //app listener
-app.listen(3000, () => {
-  console.log("Application Initialized");
+app.listen(port, () => {
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${port}`)
 });
