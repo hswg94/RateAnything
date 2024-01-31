@@ -20,6 +20,13 @@ const ExpressError = require("./utils/ExpressError.js");
 const http = require("http");
 const { connectDB } = require('./utils/connectDB.js')
 const port = process.env.PORT || 3000;
+const cors = require('cors');
+
+const corsOptions = {
+  origin: 'https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css',
+};
+
+app.use(cors(corsOptions));
 
 mongoose.set("strictQuery", false);
 
