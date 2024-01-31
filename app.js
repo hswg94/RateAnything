@@ -19,7 +19,7 @@ const MongoStore = require("connect-mongo");
 const ExpressError = require("./utils/ExpressError.js");
 const http = require("http");
 const { connectDB } = require('./utils/connectDB.js')
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 mongoose.set("strictQuery", false);
 
