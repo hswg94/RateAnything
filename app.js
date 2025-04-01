@@ -105,14 +105,14 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
 app.use("/", userRoutes);
 app.use("/items", campgroundRoutes);
 app.use("/items/:id/reviews", reviewRoutes);
 app.get("/", (req, res) => {
   res.render("home");
 });
+
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
